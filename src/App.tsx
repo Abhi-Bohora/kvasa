@@ -188,24 +188,24 @@ function App() {
         isDark ? "bg-gray-900" : "bg-gray-50"
       }`}
     >
-      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-        <div className="flex justify-end mb-6">
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 py-2 sm:py-4">
+        <div className="flex justify-end mb-2 sm:mb-4">
           <button
             onClick={() => setIsDark(!isDark)}
-            className={`p-2 rounded-full ${
+            className={`p-1.5 sm:p-2 rounded-full ${
               isDark
                 ? "bg-gray-700 hover:bg-gray-600 text-yellow-300"
                 : "bg-gray-200 hover:bg-gray-300 text-gray-700"
             } transition-colors duration-200`}
           >
-            {isDark ? <FiSun size={24} /> : <FiMoon size={24} />}
+            {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </div>
-        <div className="max-w-2xl mx-auto">
-          <div className="relative mb-2">
+        <div className="w-full max-w-2xl mx-auto">
+          <div className="mb-2 sm:mb-4">
             {isPlaying ? (
               <div
-                className={`w-full h-32 mb-6 p-4 rounded-lg transition-colors duration-200 ${
+                className={`w-full h-24 sm:h-32 mb-2 sm:mb-4 p-2 sm:p-4 rounded-lg transition-colors duration-200 ${
                   isDark
                     ? "bg-gray-800 text-white border-gray-700"
                     : "bg-white text-gray-900 border-gray-300"
@@ -220,7 +220,7 @@ function App() {
                 onChange={handleTextareaChange}
                 onClick={handleClick}
                 onKeyDown={handleKeyDown}
-                className={`w-full h-24 sm:h-32 mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none text-base sm:text-lg ${
+                className={`w-full h-24 sm:h-32 mb-2 sm:mb-4 p-2 sm:p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none text-base ${
                   isDark
                     ? "bg-gray-800 text-white border-gray-700 placeholder-gray-400"
                     : "bg-white text-gray-900 border-gray-300 placeholder-gray-500"
@@ -229,10 +229,10 @@ function App() {
               />
             )}
           </div>
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-2 sm:mb-4">
             <button
               onClick={isPlaying ? stopSpeaking : startSpeaking}
-              className={`px-4 sm:px-6 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 ${
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 ${
                 isDark
                   ? "bg-indigo-600 hover:bg-indigo-700 text-white"
                   : "bg-indigo-500 hover:bg-indigo-600 text-white"
@@ -249,12 +249,12 @@ function App() {
               )}
             </button>
           </div>
-          <div className="grid grid-cols-5 sm:grid-cols-7 gap-1 sm:gap-3">
+          <div className="w-full grid grid-cols-5 sm:grid-cols-7 gap-0.5 sm:gap-2">
             {koreanKeys.map((key) => (
               <button
                 key={key}
                 onClick={() => handleKeyClick(key)}
-                className={`h-10 sm:h-12 rounded-lg transition-colors duration-200 flex items-center justify-center text-base sm:text-lg font-medium shadow-sm ${
+                className={`h-8 sm:h-12 rounded transition-colors duration-200 flex items-center justify-center text-sm sm:text-base font-medium ${
                   isDark
                     ? "bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
                     : "bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200"
@@ -265,13 +265,13 @@ function App() {
             ))}
             <button
               onClick={handleBackspace}
-              className={`col-span-2 h-10 sm:h-12 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-sm ${
+              className={`col-span-2 h-8 sm:h-12 rounded transition-colors duration-200 flex items-center justify-center ${
                 isDark
                   ? "bg-rose-600 hover:bg-rose-700 text-white"
                   : "bg-rose-500 hover:bg-rose-600 text-white"
               }`}
             >
-              <MdKeyboardBackspace className="w-5 h-5 sm:w-6 sm:h-6" />
+              <MdKeyboardBackspace className="w-4 h-4 sm:w-6 sm:h-6" />
             </button>
           </div>
         </div>

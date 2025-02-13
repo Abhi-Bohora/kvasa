@@ -31,3 +31,7 @@ button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 200ms;
 }
+
+.highlight {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}

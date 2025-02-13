@@ -3,6 +3,7 @@ import { koreanKeys } from "./utils/korean-keys";
 import * as hangul from "hangul-js";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { FaPlay, FaStop } from "react-icons/fa";
 
 const useTheme = () => {
   const [isDark, setIsDark] = useState(() => {
@@ -24,7 +25,74 @@ function App() {
   const [inputValue, setInputValue] = useState("");
   const [cursorPosition, setCursorPosition] = useState(0);
   const [isDark, setIsDark] = useTheme();
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [highlightIndex, setHighlightIndex] = useState<{
+    start: number;
+    end: number;
+  } | null>(null);
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const highlightIntervalRef = useRef<number | null>(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const startTimeRef = useRef<number>(0);
+
+  const startSpeaking = () => {
+    if (!assembledHanguel) return;
+
+    window.speechSynthesis.cancel();
+    if (highlightIntervalRef.current) {
+      clearInterval(highlightIntervalRef.current);
+      highlightIntervalRef.current = null;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(assembledHanguel);
+    utterance.lang = "ko-KR";
+    utterance.rate = 0.8;
+    utteranceRef.current = utterance;
+
+    utterance.onstart = () => {
+      setIsPlaying(true);
+      startTimeRef.current = Date.now();
+    };
+
+    utterance.onboundary = (event) => {
+      const { charIndex, charLength } = event;
+      setHighlightIndex({
+        start: charIndex,
+        end: charIndex + charLength,
+      });
+    };
+
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setHighlightIndex(null);
+      utteranceRef.current = null;
+    };
+
+    utterance.onerror = (event) => {
+      console.error("Speech synthesis error:", event);
+      setIsPlaying(false);
+      setHighlightIndex(null);
+      utteranceRef.current = null;
+    };
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const stopSpeaking = () => {
+    if (utteranceRef.current) {
+      window.speechSynthesis.cancel();
+      utteranceRef.current = null;
+    }
+    setIsPlaying(false);
+    setHighlightIndex(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      stopSpeaking();
+    };
+  }, []);
 
   const handleKeyClick = (key: string) => {
     const before = inputValue.slice(0, cursorPosition);
@@ -87,6 +155,33 @@ function App() {
   const disassembledHanguel = hangul.disassemble(inputValue);
   const assembledHanguel = hangul.assemble(disassembledHanguel);
 
+  const renderHighlightedText = () => {
+    if (!highlightIndex || !isPlaying) {
+      return assembledHanguel;
+    }
+
+    const before = assembledHanguel.slice(0, highlightIndex.start);
+    const highlighted = assembledHanguel.slice(
+      highlightIndex.start,
+      highlightIndex.end
+    );
+    const after = assembledHanguel.slice(highlightIndex.end);
+
+    return (
+      <>
+        {before}
+        <span
+          className={`highlight ${
+            isDark ? "bg-blue-600 text-white" : "bg-blue-200 text-blue-900"
+          }`}
+        >
+          {highlighted}
+        </span>
+        {after}
+      </>
+    );
+  };
+
   return (
     <div
       className={`min-h-screen transition-colors duration-200 ${
@@ -106,22 +201,54 @@ function App() {
             {isDark ? <FiSun size={24} /> : <FiMoon size={24} />}
           </button>
         </div>
-
         <div className="max-w-2xl mx-auto">
-          <textarea
-            ref={textareaRef}
-            value={assembledHanguel}
-            onChange={handleTextareaChange}
-            onClick={handleClick}
-            onKeyDown={handleKeyDown}
-            className={`w-full h-32 mb-6 p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none ${
-              isDark
-                ? "bg-gray-800 text-white border-gray-700 placeholder-gray-400"
-                : "bg-white text-gray-900 border-gray-300 placeholder-gray-500"
-            } border`}
-            placeholder="Type in Korean..."
-          />
-
+          <div className="relative mb-2">
+            {isPlaying ? (
+              <div
+                className={`w-full h-32 mb-6 p-4 rounded-lg transition-colors duration-200 ${
+                  isDark
+                    ? "bg-gray-800 text-white border-gray-700"
+                    : "bg-white text-gray-900 border-gray-300"
+                } border overflow-auto whitespace-pre-wrap`}
+              >
+                {renderHighlightedText()}
+              </div>
+            ) : (
+              <textarea
+                ref={textareaRef}
+                value={assembledHanguel}
+                onChange={handleTextareaChange}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
+                className={`w-full h-32 mb-6 p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none ${
+                  isDark
+                    ? "bg-gray-800 text-white border-gray-700 placeholder-gray-400"
+                    : "bg-white text-gray-900 border-gray-300 placeholder-gray-500"
+                } border`}
+                placeholder="Type in Korean..."
+              />
+            )}
+          </div>
+          <div className="flex justify-center mb-6">
+            <button
+              onClick={isPlaying ? stopSpeaking : startSpeaking}
+              className={`px-6 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 ${
+                isDark
+                  ? "bg-blue-600 hover:bg-blue-700 text-white"
+                  : "bg-blue-500 hover:bg-blue-600 text-white"
+              }`}
+            >
+              {isPlaying ? (
+                <>
+                  <FaStop className="w-4 h-4" /> Stop
+                </>
+              ) : (
+                <>
+                  <FaPlay className="w-4 h-4" /> Read
+                </>
+              )}
+            </button>
+          </div>
           <div className="grid grid-cols-7 gap-3">
             {koreanKeys.map((key) => (
               <button

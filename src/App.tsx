@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { koreanKeys } from "./utils/korean-keys";
 import * as hangul from "hangul-js";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -95,12 +96,14 @@ function App() {
               </button>
             </div>
           ))}
-          <button
-            onClick={handleBackspace}
-            className="bg-red-500 text-white rounded p-2 col-span-2"
-          >
-            Backspace
-          </button>
+          <div className="col-span-2 flex items-center justify-center">
+            <button
+              onClick={handleBackspace}
+              className="bg-red-500 text-white rounded p-2 w-full h-12 flex items-center justify-center"
+            >
+              <MdKeyboardBackspace size={26} />
+            </button>
+          </div>
         </div>
       </div>
     </div>

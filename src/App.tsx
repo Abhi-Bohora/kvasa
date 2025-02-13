@@ -74,7 +74,7 @@ function App() {
   const assembledHanguel = hangul.assemble(disassembledHanguel);
 
   return (
-    <div>
+    <div className="min-h-screen flex items-center justify-center p-4 overflow-hidden">
       <div>
         <textarea
           ref={textareaRef}
@@ -86,13 +86,14 @@ function App() {
         />
         <div className="grid grid-cols-7 gap-2 mb-4">
           {koreanKeys.map((key) => (
-            <button
-              key={key}
-              className="bg-blue-500 text-white rounded p-2"
-              onClick={() => handleKeyClick(key)}
-            >
-              {key}
-            </button>
+            <div className="flex items-center justify-center" key={key}>
+              <button
+                className="bg-blue-500 text-white rounded p-2 w-full h-12 flex items-center justify-center"
+                onClick={() => handleKeyClick(key)}
+              >
+                {key}
+              </button>
+            </div>
           ))}
           <button
             onClick={handleBackspace}

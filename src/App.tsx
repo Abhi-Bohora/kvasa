@@ -188,7 +188,7 @@ function App() {
         isDark ? "bg-gray-900" : "bg-gray-50"
       }`}
     >
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         <div className="flex justify-end mb-6">
           <button
             onClick={() => setIsDark(!isDark)}
@@ -220,7 +220,7 @@ function App() {
                 onChange={handleTextareaChange}
                 onClick={handleClick}
                 onKeyDown={handleKeyDown}
-                className={`w-full h-32 mb-6 p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none ${
+                className={`w-full h-24 sm:h-32 mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg transition-colors duration-200 resize-none focus:ring-2 focus:ring-blue-500 outline-none text-base sm:text-lg ${
                   isDark
                     ? "bg-gray-800 text-white border-gray-700 placeholder-gray-400"
                     : "bg-white text-gray-900 border-gray-300 placeholder-gray-500"
@@ -232,29 +232,29 @@ function App() {
           <div className="flex justify-center mb-6">
             <button
               onClick={isPlaying ? stopSpeaking : startSpeaking}
-              className={`px-6 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 ${
+              className={`px-4 sm:px-6 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2 ${
                 isDark
-                  ? "bg-blue-600 hover:bg-blue-700 text-white"
-                  : "bg-blue-500 hover:bg-blue-600 text-white"
+                  ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                  : "bg-indigo-500 hover:bg-indigo-600 text-white"
               }`}
             >
               {isPlaying ? (
                 <>
-                  <FaStop className="w-4 h-4" /> Stop
+                  <FaStop className="w-3 h-3 sm:w-4 sm:h-4" /> Stop
                 </>
               ) : (
                 <>
-                  <FaPlay className="w-4 h-4" /> Read
+                  <FaPlay className="w-3 h-3 sm:w-4 sm:h-4" /> Read
                 </>
               )}
             </button>
           </div>
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-5 sm:grid-cols-7 gap-1 sm:gap-3">
             {koreanKeys.map((key) => (
               <button
                 key={key}
                 onClick={() => handleKeyClick(key)}
-                className={`h-12 rounded-lg transition-colors duration-200 flex items-center justify-center text-lg font-medium shadow-sm ${
+                className={`h-10 sm:h-12 rounded-lg transition-colors duration-200 flex items-center justify-center text-base sm:text-lg font-medium shadow-sm ${
                   isDark
                     ? "bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
                     : "bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200"
@@ -265,13 +265,13 @@ function App() {
             ))}
             <button
               onClick={handleBackspace}
-              className={`col-span-2 h-12 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-sm ${
+              className={`col-span-2 h-10 sm:h-12 rounded-lg transition-colors duration-200 flex items-center justify-center shadow-sm ${
                 isDark
-                  ? "bg-red-600 hover:bg-red-700 text-white"
-                  : "bg-red-500 hover:bg-red-600 text-white"
+                  ? "bg-rose-600 hover:bg-rose-700 text-white"
+                  : "bg-rose-500 hover:bg-rose-600 text-white"
               }`}
             >
-              <MdKeyboardBackspace size={26} />
+              <MdKeyboardBackspace className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
         </div>

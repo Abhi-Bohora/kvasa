@@ -5,6 +5,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlay, FaStop } from "react-icons/fa";
 import Description from "./components/description";
+import { FaGithub } from "react-icons/fa";
 
 const useTheme = () => {
   const [isDark, setIsDark] = useState(() => {
@@ -201,6 +202,15 @@ function App() {
           >
             {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
+          <div
+            className={`p-1.5 sm:p-2 rounded-full cursor-pointer transition-colors duration-200 ${
+              isDark
+                ? "text-white hover:text-gray-300"
+                : "text-gray-800 hover:text-gray-600"
+            }`}
+          >
+            <FaGithub size={20} />
+          </div>
         </div>
         <Description isDark={isDark} />
         <div className="w-full max-w-2xl mx-auto">

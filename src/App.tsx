@@ -4,6 +4,7 @@ import * as hangul from "hangul-js";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { FiSun, FiMoon } from "react-icons/fi";
 import { FaPlay, FaStop } from "react-icons/fa";
+import Description from "./components/description";
 
 const useTheme = () => {
   const [isDark, setIsDark] = useState(() => {
@@ -201,6 +202,7 @@ function App() {
             {isDark ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         </div>
+        <Description isDark={isDark} />
         <div className="w-full max-w-2xl mx-auto">
           <div className="mb-2 sm:mb-4">
             {isPlaying ? (

@@ -113,29 +113,38 @@ function App() {
 
   const handleBackspace = () => {
     if (cursorPosition === 0) return;
-    const before = inputValue.slice(0, cursorPosition);
-    const after = inputValue.slice(cursorPosition);
-    const charBeforeCursor = before.slice(-1);
-    const charDisassembled = hangul.disassemble(charBeforeCursor);
-    let newBefore;
-    if (charDisassembled.length > 1) {
-      const beforeDisassembled = hangul.disassemble(before);
-      const newBeforeDisassembled = beforeDisassembled.slice(0, -1);
-      newBefore = hangul.assemble(newBeforeDisassembled);
-    } else {
-      newBefore = before.slice(0, -1);
+    const fullDisassembled = hangul.disassemble(inputValue);
+
+    let jamoIndex = 0;
+    let charIndex = 0;
+    
+    while (charIndex < cursorPosition && jamoIndex < fullDisassembled.length) {
+      const char = hangul.assemble(fullDisassembled.slice(jamoIndex));
+      jamoIndex += hangul.disassemble(char.charAt(0)).length;
+      charIndex += 1;
     }
-    const newValue = newBefore + after;
-    setInputValue(newValue);
-    const newPosition = newBefore.length;
-    setCursorPosition(newPosition);
-    setTimeout(() => {
-      if (textareaRef.current) {
-        textareaRef.current.selectionStart = newPosition;
-        textareaRef.current.selectionEnd = newPosition;
-        textareaRef.current.focus();
-      }
-    }, 0);
+    
+    if (jamoIndex > 0) {
+      const newDisassembled = [
+        ...fullDisassembled.slice(0, jamoIndex - 1),
+        ...fullDisassembled.slice(jamoIndex)
+      ];
+      
+      const newValue = hangul.assemble(newDisassembled);
+      const beforeDeletion = hangul.assemble(fullDisassembled.slice(0, jamoIndex - 1));
+      const newPosition = beforeDeletion.length;
+      
+      setInputValue(newValue);
+      setCursorPosition(newPosition);
+      
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = newPosition;
+          textareaRef.current.selectionEnd = newPosition;
+          textareaRef.current.focus();
+        }
+      }, 0);
+    }
   };
 
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

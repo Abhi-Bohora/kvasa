@@ -275,13 +275,15 @@ function App() {
               <button
                 key={key}
                 onClick={() => handleKeyClick(key)}
-                className={`h-8 sm:h-12 rounded transition-colors duration-200 flex items-center justify-center text-sm sm:text-base font-medium ${
+                className={`${
+                  key === " " ? "col-span-3" : ""
+                } h-8 sm:h-12 rounded transition-colors duration-200 flex items-center justify-center text-sm sm:text-base font-medium ${
                   isDark
                     ? "bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
                     : "bg-gray-100 hover:bg-gray-200 text-gray-900 border border-gray-200"
                 }`}
               >
-                {key}
+                {key === " " ? "Space" : key}
               </button>
             ))}
             <button

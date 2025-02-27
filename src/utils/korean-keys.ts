@@ -46,4 +46,6 @@ export const koreanKeys = [
   ",",
   "?",
   "!",
+   // Space character
+  " "
 ];

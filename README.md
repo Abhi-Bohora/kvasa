@@ -3,4 +3,4 @@ While learning the Korean language, I always wanted to ensure that I was pronoun
 
 In Kvasa, users can type Korean words using the virtual keyboard provided on the screen and press the `Read` button to hear the correct pronunciation.
 
-<video src="https://res.cloudinary.com/dndhicfln/video/upload/v1741011920/kvasa-video_n7g4qv.mp4" controls width="500" height="500"></video>
+[Demo Video](https://res.cloudinary.com/dndhicfln/video/upload/v1741011920/kvasa-video_n7g4qv.mp4) 🎥
